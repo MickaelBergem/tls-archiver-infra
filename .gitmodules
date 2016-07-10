@@ -1,0 +1,6 @@
+[submodule "tls-archiver-front"]
+	path = tls-archiver-front
+	url = git@github.com:MickaelBergem/tls-archiver-front.git
+[submodule "tls-archiver"]
+	path = tls-archiver
+	url = git@github.com:MickaelBergem/tls-archiver.git
