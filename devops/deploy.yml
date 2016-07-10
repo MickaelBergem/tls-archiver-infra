@@ -1,0 +1,89 @@
+
+- name: Provisioning TLS Archiver instance
+  hosts: archiver
+  sudo: yes
+  vars_files:
+    - vars/infra.yml
+
+  tasks:
+    - name: Update the package repositories
+      apt:
+        update_cache=yes
+        upgrade=safe
+        cache_valid_time=3600
+
+    - name: Install Docker
+      apt:
+        name=docker.io
+        state=latest
+
+  #
+  # pre_tasks:
+  #   - name: Install Uncomplicated Firewall software
+  #     apt: pkg=ufw state=latest
+  #   - name: Close all ports for prod server
+  #     ufw: policy=deny
+  #     when: vagrant|default(False) == False
+  #   - name: Open OpenSSH port
+  #     ufw: rule=allow port=ssh
+  #   - name: Enable UFW
+  #     ufw: state=enabled
+  #     when: vagrant|default(False) == False
+  #   - name: Generate dhparams for nginx
+  #     command: openssl dhparam -out /etc/ssl/dhparam.pem 2048
+  #     args:
+  #       creates: /etc/ssl/dhparam.pem
+  #
+  # roles:
+  #   - role: geoponts.provisionning
+  #     tags: [geoponts-provisioning]
+  #
+  #   - role: jdauphant.ssl-certs
+  #     ssl_certs_common_name: '{{ hostname_www }}'
+  #     tags:
+  #       - nginx
+  #
+  #   - role: lagilaper.php5-fpm
+  #     php_conf_max_children: 2
+  #     php_conf_pm: static
+  #     ubuntu_pkg:
+  #       - php5-common
+  #       - php5-curl
+  #     tags:
+  #       - piwik
+  #
+  #   - role: geoponts.piwik
+  #     install_dir: "/var/www/"
+  #     tags:
+  #       - piwik
+  #
+  #   - role: jdauphant.nginx
+  #     tags:
+  #       - piwik
+  #       - nginx
+  #
+  #   - role: suixo.exim4
+  #     exim4_dc_eximconfig_configtype: 'internet' # Deliver directly to the internet
+  #     exim4_dc_use_split_config: 'true'
+  #     exim4_dc_other_hostnames: '{{ dc_other_hostnames|default(hostname_www) }}'
+  #     exim4_dc_local_interfaces: '' # No value means listen on all interfaces
+  #     exim4_catch_incoming_email: geoponts@gmail.com
+  #     tags: [exim, mailing]
+  #
+  #   - role: sivel.newrelic
+  #     newrelic_license_key: '{{ newrelic_key_server }}'
+  #     newrelic_ssl: 'true'
+  #     when: newrelic_key_server|default(False) != False
+  #
+  #   - role: geoponts.rabbitmq
+  #     tags:
+  #       - rabbitmq
+  #
+  # post_tasks:
+  #   - name: Open HTTP & HTTPS port
+  #     ufw: rule=allow port=80,443 proto=tcp
+  #   - name: Open alternative HTTPS port
+  #     ufw: rule=allow port={{ alternative_ssl_port }} proto=tcp
+  #     when: alternative_ssl_port|default(False) != False
+  #   - name: Open Exim4 port
+  #     ufw: rule=allow port=25 proto=tcp

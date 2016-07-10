@@ -1,0 +1,24 @@
+db:
+    container_name: db
+    build: db/
+    ports:
+        - 5432:5432
+    environment:
+        - POSTGRES_USER=archiver
+        - POSTGRES_PASSWORD=kikoo
+        - POSTGRES_DB=archives
+
+# archiver:
+#     container_name: tls-archiver
+#     build: tls-archiver/
+#     links:
+#         - db:db
+#     restart: on-failure:20
+
+front:
+    container_name: tls-archiver-front
+    build: tls-archiver-front/
+    ports:
+        - 80:80
+    links:
+        - db:db
