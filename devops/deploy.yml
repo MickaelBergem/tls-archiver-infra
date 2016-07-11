@@ -17,6 +17,23 @@
         name=docker.io
         state=latest
 
+    # TODO create the archiver user
+    - name: Create the archiver folder
+      file:
+        path=/archiver
+        state=directory
+
+    # TODO: retrieve Github's SSH hostkey
+    - name: Clone the project
+      git:
+        repo=git://github.com/MickaelBergem/tls-archiver-infra.git
+        dest=/archiver
+        accept_hostkey=True
+        version=master
+        update=yes
+        track_submodules=yes
+
+
   #
   # pre_tasks:
   #   - name: Install Uncomplicated Firewall software
