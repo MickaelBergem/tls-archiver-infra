@@ -1,6 +1,6 @@
 db:
     container_name: db
-    build: db/
+    image: suixo/tlsarchiver_db
     ports:
         - 5432:5432
     environment:
@@ -17,7 +17,7 @@ db:
 
 front:
     container_name: tls-archiver-front
-    build: tls-archiver-front/
+    image: suixo/tlsarchiver_front
     ports:
         - 80:80
     links:
