@@ -2,11 +2,13 @@ db:
     container_name: db
     image: suixo/tlsarchiver_db
     ports:
-        - 5432:5432
+        - "127.0.0.1:5432:5432"
     environment:
         - POSTGRES_USER=archiver
         - POSTGRES_PASSWORD=kikoo
         - POSTGRES_DB=archives
+# TODO: use a volume to save the data across container reboot...
+# TODO: use container names
 
 # archiver:
 #     container_name: tls-archiver
