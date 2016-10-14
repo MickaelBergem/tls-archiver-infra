@@ -1,8 +1,11 @@
 # TLS Archiver
 
+This repository is the glue between all the services of the TLS Archiver project.
+
 ## Build and run
 
-    make
+To spin up some containers needed by the archiver, run:
+
     docker-compose up
 
 ## DevOps
