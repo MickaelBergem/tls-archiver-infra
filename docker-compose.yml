@@ -1,26 +1,35 @@
-db:
-    container_name: db
-    image: suixo/tlsarchiver_db
-    ports:
-        - "127.0.0.1:5432:5432"
-    environment:
-        - POSTGRES_USER=archiver
-        - POSTGRES_PASSWORD=kikoo
-        - POSTGRES_DB=archives
-# TODO: use a volume to save the data across container reboot...
-# TODO: use container names
+version: '2'
+services:
+    db:
+        image: tlsarchiver/dbcontainer
+        container_name: tlsa-db
+        ports:
+            - "127.0.0.1:5432:5432"
+        environment:
+            - POSTGRES_USER=archiver
+            - POSTGRES_PASSWORD=kakoo
+            - POSTGRES_DB=archives
+        volumes:
+            - "db-data:/var/lib/postgresql:rw"
 
-# archiver:
-#     container_name: tls-archiver
-#     build: tls-archiver/
-#     links:
-#         - db:db
-#     restart: on-failure:20
+    # archiver:
+    #     container_name: tls-archiver
+    #     build: tls-archiver/
+    #     links:
+    #         - db:db
+    #     restart: on-failure:20
 
-front:
-    container_name: tls-archiver-front
-    image: suixo/tlsarchiver_front
-    ports:
-        - 80:80
-    links:
-        - db:db
+    front:
+        image: tlsarchiver/front
+        container_name: tlsa-front
+        environment:
+            - TLSA_DB_USER=archiver
+            - TLSA_DB_PASSWORD=kakoo
+        ports:
+            - 80:80
+        links:
+            - db:db
+
+volumes:
+    db-data:
+        driver: local
